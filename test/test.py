@@ -1,6 +1,6 @@
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import TickCount, ClockCycles
+from cocotb.triggers import ClockCycles
 
 @cocotb.test()
 async def test_project(dut):
@@ -23,13 +23,13 @@ async def test_project(dut):
     # 2. Shift in a value (Let's load '50' into the NPU)
     # 50 in hex is 0x32. We'll shift it into the 4-bit data pins (ui_in[4:7])
     dut._log.info("Shifting in data: 50")
-    dut.ui_in.value = 0x01  # ui[0]=1 (Shift Enable)
     
     # Send lower nibble (0x2)
-    dut.ui_in.value = 0x21 # ui[4:7]=2, ui[0]=1
+    dut.ui_in.value = 0x21 # ui[4:7]=2, ui[0]=1 (Shift Enable)
     await ClockCycles(dut.clk, 1)
+    
     # Send upper nibble (0x3)
-    dut.ui_in.value = 0x31 # ui[4:7]=3, ui[0]=1
+    dut.ui_in.value = 0x31 # ui[4:7]=3, ui[0]=1 (Shift Enable)
     await ClockCycles(dut.clk, 1)
     
     dut.ui_in.value = 0  # Stop shifting
@@ -41,6 +41,5 @@ async def test_project(dut):
     await ClockCycles(dut.clk, 1)
     
     # 4. Check the result
-    # We expect '50' to be returned in the output register
     dut._log.info(f"Checking output: {dut.uo_out.value}")
     assert dut.uo_out.value == 50
