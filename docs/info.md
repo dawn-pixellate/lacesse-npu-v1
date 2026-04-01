@@ -1,20 +1,14 @@
-<!---
-
-This file is used to generate your project datasheet. Please fill in the information below and delete any unused
-sections.
-
-You can also include images in this folder and reference them in the markdown. Each image must be less than
-512 kb in size, and the combined size of all images must be less than 1 MB.
--->
+# Lacesse Fikra NPU
 
 ## How it works
-
-Explain how your project works
+This project is a 2x2 Systolic Array designed for ternary weight AI inference. It utilizes a serial shift register to load 32-bit data through an 8-bit physical interface. Once loaded, the NPU performs multiply-accumulate operations using ternary weights (-1, 0, 1), which significantly reduces silicon area by eliminating traditional multipliers.
 
 ## How to test
-
-Explain how to use your project
+1. Reset the chip using the `rst_n` pin.
+2. Set `Shift Enable` (ui[0]) to high.
+3. Pulse 8-bit data chunks through `Data` (ui[4:7]) to fill the 32-bit internal register.
+4. Set `Cmd Valid` (ui[1]) to high and select a `Func ID` (ui[2:3]) to load weights or trigger a calculation.
+5. Observe the 8-bit result on the output pins (uo[0:7]).
 
 ## External hardware
-
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+No external hardware is required other than standard input switches and output LEDs.
